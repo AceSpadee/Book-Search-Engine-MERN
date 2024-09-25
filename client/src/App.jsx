@@ -10,7 +10,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 // Get the GraphQL endpoin
-const GRAPHQL_ENDPOINT = "http://localhost:3001/graphql";
+const GRAPHQL_ENDPOINT = import.meta.env.VITE_GRAPHQL_ENDPOINT;
 
 // Construct our main GraphQL API endpoint.
 const httpLink = createHttpLink({

@@ -1,7 +1,6 @@
 // Import the gql tagged template literal from @apollo/client to define the queries.
 import { gql } from "@apollo/client";
 // LOGIN_USER will execute the loginUser mutation set up using Apollo Server.
-// ========================================================================================
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -10,6 +9,15 @@ export const LOGIN_USER = gql`
         _id
         username
         email
+        bookCount
+        savedBooks {
+          bookId
+          authors
+          description
+          title
+          image
+          link
+        }
       }
     }
   }

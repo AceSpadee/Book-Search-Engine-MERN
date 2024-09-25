@@ -46,12 +46,6 @@ module.exports = {
   // Function to generate a JWT token.
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
-    try {
-      const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-      console.log("Generated Token:", token); // Debugging log
-      return token;
-    } catch (err) {
-      console.error("Error generating token:", err);
-    }
+    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   },
 };

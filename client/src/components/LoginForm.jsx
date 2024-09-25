@@ -26,38 +26,37 @@ const LoginForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
   // Define the handleFormSubmit function with the event parameter.
-const handleFormSubmit = async (event) => {
-  event.preventDefault();
-
-  const form = event.currentTarget;
-  if (form.checkValidity() === false) {
+  const handleFormSubmit = async (event) => {
+    // Prevent the default form submission behavior.
     event.preventDefault();
-    event.stopPropagation();
-  }
-  
-  try {
-    // Execute the loginUser mutation and pass the userFormData as the variables.
-    const { data } = await loginUser({
-      variables: { ...userFormData },
+
+    // Check if form has everything (as per react-bootstrap docs).
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    // Set the validated state to true.
+    try {
+      // Execute the loginUser mutation and pass the userFormData as the variables.
+      const { data } = await loginUser({
+        variables: { ...userFormData },
+      });
+      // Console.log(data)
+      // Use the Auth.login() method to log the user in with the token received from the mutation response.
+      const token = data.login.token;
+      Auth.login(token);
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
+    }
+    // Clear form values after submission.
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
     });
-
-    // Log the response to check what is being returned
-    console.log("Login response data:", data);
-    
-    const token = data.login.token;
-    Auth.login(token);
-  } catch (err) {
-    console.error(err);
-    setShowAlert(true);
-  }
-
-  // Clear form values after submission.
-  setUserFormData({
-    username: "",
-    email: "",
-    password: "",
-  });
-};
+  };
 
   return (
     <>

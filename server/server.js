@@ -8,6 +8,8 @@ const { authMiddleware } = require("./utils/auth");
 const { typeDefs, resolvers } = require("./schemas");
 const db = require("./config/connection");
 
+require('dotenv').config();
+
 const PORT = process.env.PORT || 4000;
 const app = express();
 const server = new ApolloServer({
@@ -17,7 +19,7 @@ const server = new ApolloServer({
 
 // Set up CORS options.
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
@@ -45,8 +47,9 @@ const startApolloServer = async () => {
       res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
-// DB once open, start the server and listen to the ports.
+  // DB once open, start the server and listen to the ports.
   db.once("open", () => {
+    console.log("MongoDB connected successfully");
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
